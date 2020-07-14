@@ -107,7 +107,7 @@ master-3|Ready|master|26m|v1.18.5
 worker-1|Ready|worker|22m|v1.18.5
 worker-2|Ready|worker|21m|v1.18.5
 
-### Step 3 : Validate the Kubernetes is up and running
+### Step 4 : Shutdown Kubernetes cluster and Services VM
 Now simply stop the K8s cluster and then the Services VM (in that order since the proxy is used to communicate to the API servers.
 ```bash
 [vagrant@master-1 ~]$ exit
