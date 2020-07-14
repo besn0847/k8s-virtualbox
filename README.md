@@ -50,7 +50,7 @@ Just go to the last directory, and kickoff teh Vagrant deployment. The process i
  - Same for Master 3 (~3-4 minutes again)
  - The workers 1 and 2 are then started sequentially without waiting for one to complete and then the other; this is done in parallel
 ```bash
-cd 2.kuberenetes
+cd 2.kubernetes
 vagrant up
 ```
 This process usually takes 10 to 15 minutes at the initialization must be done.
@@ -58,7 +58,7 @@ This process usually takes 10 to 15 minutes at the initialization must be done.
 ### Step 3 : Validate the Kubernetes is up and running
 We connect to the first Kubernetes node, validate that all pods are running and finally we label the 2 worker nodes to act as workers. We do a final check that everything is ok.
 ```bash
-cd 2.kuberenetes
+cd 2.kubernetes
 vagrant ssh master1
 [vagrant@master-1 ~]$ kubectl get pods -n kube-system
 ```
