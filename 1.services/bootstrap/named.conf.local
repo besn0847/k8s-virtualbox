@@ -1,0 +1,9 @@
+zone "k8s.local" {
+    type master;
+    file "/etc/named/zones/db.k8s.local"; # zone file path
+};
+
+zone "0.0.10.in-addr.arpa" {
+    type master;
+    file "/etc/named/zones/db.10.0.0";  # 10.0.0.0/24 subnet
+};

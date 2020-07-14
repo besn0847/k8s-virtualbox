@@ -1,0 +1,25 @@
+$TTL    604800
+@       IN      SOA     services.k8s.local. admin.k8s.local. (
+                  6     ; Serial
+             604800     ; Refresh
+              86400     ; Retry
+            2419200     ; Expire
+             604800     ; Negative Cache TTL
+)
+
+; name servers - NS records
+    IN      NS      services.k8s.local.
+
+; name servers - PTR records
+10    IN    PTR    services.k8s.local.
+
+; Kubernetes Cluster - PTR records
+11    IN    PTR    master-1.cluster.k8s.local.
+12    IN    PTR    master-2.cluster.k8s.local.
+13    IN    PTR    master-3.cluster.k8s.local.
+21    IN    PTR    worker-1.cluster.k8s.local.
+22    IN    PTR    worker-2.cluster.k8s.local.
+23    IN    PTR    worker-2.cluster.k8s.local.
+10    IN    PTR    api.cluster.k8s.local.
+10    IN    PTR    api-int.cluster.k8s.local.
+

@@ -1,0 +1,152 @@
+###########################################################################
+###                 Global variables to set-up k8s                      ###
+###########################################################################
+K8S_HAPROXY_IP = "10.0.0.10"
+K8S_MASTER1_IP = "10.0.0.11"
+K8S_MASTER2_IP = "10.0.0.12"
+K8S_MASTER3_IP = "10.0.0.13"
+K8S_WORKER1_IP = "10.0.0.21"
+K8S_WORKER2_IP = "10.0.0.22"
+K8S_VERSION = "1.18.5"
+K8S_TOKEN = "e02jbq.2rq0bl99chvs8cly"
+K8S_BOX_NAME = "k8s-centos"
+
+###########################################################################
+###                 Configure k8s master node 1                         ###
+###########################################################################
+Vagrant.configure("2") do |config|
+  config.vm.define "master1" do |master|
+    master.vm.provider :virtualbox do |v|
+        v.customize ["modifyvm", :id, "--name", "k8s-master1"]
+        v.customize ["modifyvm", :id, "--memory", 3064]
+        v.customize ["modifyvm", :id, "--cpus", 2]
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    end
+
+    master.vm.box = K8S_BOX_NAME
+    
+    master.vm.hostname = "master-1"
+    master.ssh.insert_key = false
+    master.vm.synced_folder ".", "/vagrant", disabled: true
+
+    master.vm.network :private_network, ip: K8S_MASTER1_IP
+
+    master.vm.provision "file", source: "master-init.sh", destination: "master-init.sh"
+    master.vm.provision "shell", inline: "chmod +x /home/vagrant/master-init.sh"
+
+    master.vm.provision "shell", inline: "sudo /home/vagrant/master-init.sh #{K8S_MASTER1_IP} #{K8S_TOKEN} #{K8S_VERSION} master-1", privileged: true
+
+  end
+end
+
+###########################################################################
+###                 Configure k8s master node 2                         ###
+###########################################################################
+Vagrant.configure("2") do |config|
+  config.vm.define "master2" do |master|
+    master.vm.provider :virtualbox do |v|
+        v.customize ["modifyvm", :id, "--name", "k8s-master2"]
+        v.customize ["modifyvm", :id, "--memory", 3064]
+        v.customize ["modifyvm", :id, "--cpus", 2]
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    end
+
+    master.vm.box = K8S_BOX_NAME
+    
+    master.vm.hostname = "master-2"
+    master.ssh.insert_key = false
+    master.vm.synced_folder ".", "/vagrant", disabled: true
+
+    master.vm.network :private_network, ip: K8S_MASTER2_IP
+
+    master.vm.provision "file", source: "master.sh", destination: "master.sh"
+    master.vm.provision "shell", inline: "chmod +x /home/vagrant/master.sh"
+
+    master.vm.provision "shell", inline: "sudo /home/vagrant/master.sh #{K8S_MASTER2_IP} #{K8S_TOKEN} master-2", privileged: true
+
+  end
+end
+
+###########################################################################
+###                 Configure k8s master node 3                         ###
+###########################################################################
+Vagrant.configure("2") do |config|
+  config.vm.define "master3" do |master|
+    master.vm.provider :virtualbox do |v|
+        v.customize ["modifyvm", :id, "--name", "k8s-master3"]
+        v.customize ["modifyvm", :id, "--memory", 3064]
+        v.customize ["modifyvm", :id, "--cpus", 2]
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    end
+
+    master.vm.box = K8S_BOX_NAME
+    
+    master.vm.hostname = "master-3"
+    master.ssh.insert_key = false
+    master.vm.synced_folder ".", "/vagrant", disabled: true
+
+    master.vm.network :private_network, ip: K8S_MASTER3_IP
+
+    master.vm.provision "file", source: "master.sh", destination: "master.sh"
+    master.vm.provision "shell", inline: "chmod +x /home/vagrant/master.sh"
+
+    master.vm.provision "shell", inline: "sudo /home/vagrant/master.sh #{K8S_MASTER3_IP} #{K8S_TOKEN} master-3", privileged: true
+
+  end
+end
+
+###########################################################################
+###                 Configure k8s worker node 1                         ###
+###########################################################################
+Vagrant.configure("2") do |config|
+  config.vm.define "worker1" do |worker|
+    worker.vm.provider :virtualbox do |v|
+        v.customize ["modifyvm", :id, "--name", "k8s-worker1"]
+        v.customize ["modifyvm", :id, "--memory", 8092]
+        v.customize ["modifyvm", :id, "--cpus", 2]
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    end
+
+    worker.vm.box = K8S_BOX_NAME
+    
+    worker.vm.hostname = "worker-1"
+    worker.ssh.insert_key = false
+    worker.vm.synced_folder ".", "/vagrant", disabled: true
+
+    worker.vm.network :private_network, ip: K8S_WORKER1_IP
+
+    worker.vm.provision "file", source: "worker.sh", destination: "worker.sh"
+    worker.vm.provision "shell", inline: "chmod +x /home/vagrant/worker.sh"
+
+    worker.vm.provision "shell", inline: "sudo /home/vagrant/worker.sh #{K8S_WORKER1_IP} #{K8S_TOKEN} worker-1", privileged: true
+
+  end
+end
+
+###########################################################################
+###                 Configure k8s worker node 2                         ###
+###########################################################################
+Vagrant.configure("2") do |config|
+  config.vm.define "worker2" do |worker|
+    worker.vm.provider :virtualbox do |v|
+        v.customize ["modifyvm", :id, "--name", "k8s-worker2"]
+        v.customize ["modifyvm", :id, "--memory", 8092]
+        v.customize ["modifyvm", :id, "--cpus", 2]
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    end
+
+    worker.vm.box = K8S_BOX_NAME
+    
+    worker.vm.hostname = "worker-2"
+    worker.ssh.insert_key = false
+    worker.vm.synced_folder ".", "/vagrant", disabled: true
+
+    worker.vm.network :private_network, ip: K8S_WORKER2_IP
+
+    worker.vm.provision "file", source: "worker.sh", destination: "worker.sh"
+    worker.vm.provision "shell", inline: "chmod +x /home/vagrant/worker.sh"
+
+    worker.vm.provision "shell", inline: "sudo /home/vagrant/worker.sh #{K8S_WORKER2_IP} #{K8S_TOKEN} worker-2", privileged: true
+
+  end
+end
