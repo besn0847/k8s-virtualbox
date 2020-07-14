@@ -63,15 +63,7 @@ vagrant ssh master1
 [vagrant@master-1 ~]$ kubectl get pods -n kube-system
 ```
 The expected result should be :
-> TT
 
-Now label the 2 worker nodes as workers and verify that all nodes are up & running
-```bash
-[vagrant@master-1 ~]$ kubectl label nodes worker-1 kubernetes.io/role=worker
-[vagrant@master-1 ~]$ kubectl label nodes worker-1 kubernetes.io/role=worker
-[vagrant@master-1 ~]$ kubectl get nodes
-```
-The expected result should be :
 |NAME|READY|STATUS|RESTARTS|AGE|
 |-|-|-|-|-|
 |calico-kube-controllers-76d4774d89-zwnm9|1/1|Running|0|17m|
@@ -80,7 +72,40 @@ The expected result should be :
 |calico-node-mxjh6|1/1|Running|0|5m28s|
 |calico-node-r7zhq|1/1|Running|0|6m59s|
 |calico-node-rntpv|1/1|Running|0|10m|
+coredns-66bff467f8-spzkg|1/1|Running|0|17m|
+coredns-66bff467f8-wfxt5|1/1|Running|0|17m|
+etcd-master-1|1/1|Running|0|17m|
+etcd-master-2|1/1|Running|0|13m|
+etcd-master-3|1/1|Running|0|10m|
+kube-apiserver-master-1|1/1|Running|0|17m|
+kube-apiserver-master-2|1/1|Running|0|13m|
+kube-apiserver-master-3|1/1|Running|0|10m|
+kube-controller-manager-master-1|1/1|Running|1|17m|
+kube-controller-manager-master-2|1/1|Running|0|13m|
+kube-controller-manager-master-3|1/1|Running|0|10m|
+kube-proxy-hcr79|1/1|Running|0|10m|
+kube-proxy-j9bfn|1/1|Running|0|5m28s|
+kube-proxy-sgs24|1/1|Running|0|17m|
+kube-proxy-sm662|1/1|Running|0|13m|
+kube-proxy-wx8v9|1/1|Running|0|6m59s|
+kube-scheduler-master-1|1/1|Running|1|17m|
+kube-scheduler-master-2|1/1|Running|0|13m|
+kube-scheduler-master-3|1/1|Running|0|10m|
 
+Now label the 2 worker nodes as workers and verify that all nodes are up & running
+```bash
+[vagrant@master-1 ~]$ kubectl label nodes worker-1 kubernetes.io/role=worker
+[vagrant@master-1 ~]$ kubectl label nodes worker-1 kubernetes.io/role=worker
+[vagrant@master-1 ~]$ kubectl get nodes
+```
+The expected result should be :
+NAME|STATUS|ROLES|AGE|VERSION
+|-|-|-|-|-|
+master-1|Ready|master|33m|v1.18.5
+master-2|Ready|master|29m|v1.18.5
+master-3|Ready|master|26m|v1.18.5
+worker-1|Ready|worker|22m|v1.18.5
+worker-2|Ready|worker|21m|v1.18.5
 
 ### Step 3 : Validate the Kubernetes is up and running
 Now simply stop the K8s cluster and then the Services VM (in that order since the proxy is used to communicate to the API servers.
